@@ -8,9 +8,19 @@ export default function Main(){
     const [recipe, setRecipe] = useState("")
 
 
-    function addIngredient(formData){
-        const newIngredient = formData.get("ingredient")?.trim();
-        setIngredients((prevIngredient) => [...prevIngredient, newIngredient]);
+    function addIngredient(e){
+        e.preventDefault()
+
+        const formData = new FormData(e.currentTarget)
+        const newIngredient = formData.get("ingredient")?.trim() //?. is like saying: “if this exists, then call .trim().”
+        setIngredients(
+            prevIngredient => [
+                ...prevIngredient,
+                newIngredient
+            ]
+        )
+
+        e.target.reset();
     }
 
     async function getRecipe() {
@@ -20,7 +30,7 @@ export default function Main(){
 
     return (
     <main>
-        <form className="add-ingredient-form" action={addIngredient}>
+        <form className="add-ingredient-form" onSubmit={addIngredient}>
             <input type="text" placeholder="e.g. oregano" aria-label="Add ingredient" name="ingredient"/>
             <button>Add Ingredients</button>
         </form>
